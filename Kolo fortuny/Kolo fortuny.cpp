@@ -34,6 +34,7 @@ int main()
     int x = rand() % 10;
 
     int IloscLiter = slowa[x].length();
+    string Litera;
 
 
     cout << "------- GENEROWANIE HASLA -------" << endl;
@@ -45,14 +46,21 @@ int main()
     }
     system("cls");
     
-    cout << "--------- KOLO FORTUNY ----------" << endl;
+    cout << "********* KOLO FORTUNY **********" << endl;
 
     cout << "liczba liter to: " << IloscLiter << endl;
+    Sleep(100);
+
+    cout << "*********************************" << endl;
+    
+    cout << "[ ";  PolaWypelniania(IloscLiter); cout << "]" << endl;
 
     cout << "---------------------------------" << endl;
-    Sleep(100);
-   
-    cout << "[ ";  PolaWypelniania(IloscLiter); cout << "]" << endl;
+
+    cout << "Podaj pierwsza litere: "; cin >> Litera;
+
+
+
 
     
 
@@ -60,6 +68,14 @@ int main()
 
 
 
+
+
+
+
+
+
+
+    
     
     return 0;
 }
