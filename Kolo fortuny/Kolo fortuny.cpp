@@ -4,7 +4,8 @@
 #include <stdlib.h> /* srand, rand */
 #include <time.h> /* time */
 #include <string>
-#include <typeinfo>
+
+using namespace std;
 
 void textColor(char c = 'W')
 {
@@ -29,82 +30,199 @@ void textColor(char c = 'W')
     SetConsoleTextAttribute(hStdOut, colors);
 }
 
-using namespace std;
+string slowa[10] = { "pies","kot","klawiatura","tranzystor","kondensator","myszka","komputer","lampka","monitor","glowa" };
 
-string slowa[10] = { "pies","kot","klawiatura","tranzystor","kondensator","myszka","komputer","lampka","monitor","glowa"};
+//Wypełnainie tablic
 
-void PolaWypelniania(int x)
+string PolaWypelniania(int x, int y, string z)
 {
     int* wypelnianie;
+    string* porownanie;
+    std::string PustePole = "_";
 
     wypelnianie = new int[x];
+    porownanie = new string[x];
 
     for (int i = 0; i < x; i++)
     {
-        wypelnianie[i] = 0;
+        porownanie[i] = slowa[y][i];
+
+        if (porownanie[i] == z)
+        {
+            wypelnianie[i] = 1;
+        }
+        else
+        {
+            wypelnianie[i] = 0;
+        }
+
     }
 
     for (int i = 0; i < x; i++)
     {
-        if (wypelnianie[i] == 0)
+        if (wypelnianie[i] == 0 && !(wypelnianie[i] == 1))
         {
-            cout << "_ ";
+            return PustePole;
+        }
+        else
+        {
+            string literka = porownanie[i];
+            return literka;
         }
     }
+}
 
+//Odgadywanie hasła
+
+bool OdgadnijHaslo(string x, string z)
+{
+    if (z == x) 
+
+    return true;
+
+    else 
+
+    return false;
 }
 
 int main()
 {
     srand(time(NULL));
 
-    int x = rand() % 10;
+    int pozycja = rand() % 10;
+    int IloscLiter = slowa[pozycja].length();
+    int wybor;
 
-    int IloscLiter = slowa[x].length();
-    string Litera;
+    string Haslo, Litera;
+    std::string PustePole = "_";
+    string PokazywanieLiterek[25];
+    string TabPorownanieZwpisem[25];
+
+    bool End = true;
+
+    //Wypelnianie tablicy z porownaniem
+
+    for (int i = 0; i < IloscLiter; i++)
+    {
+        TabPorownanieZwpisem[i] = slowa[pozycja][i];
+    }
+
+    // Animacja generowania hasła
 
     textColor('G');
     cout << "------- GENEROWANIE HASLA -------" << endl;
 
-    for(int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++)
     {
         cout << "---------------------------------" << endl;
         Sleep(100);
     }
     system("cls");
-    
-    textColor();
-    cout << "********* KOLO FORTUNY **********" << endl;
-
-    cout << "liczba liter to: " << IloscLiter << endl;
-    Sleep(100);
-
-    cout << "*********************************" << endl << endl;
-
-    textColor('G');
-    cout << "[ ";  PolaWypelniania(IloscLiter); cout << "]" << endl << endl;
-
-    textColor();
-    cout << "Podaj pierwsza litere: "; cin >> Litera;
 
 
+    while (End)
+    {
+        //Program własciwy
+
+        textColor();
+        cout << "********* KOLO FORTUNY **********" << endl;
+
+        cout << "liczba liter to: " << IloscLiter << endl;
+        Sleep(100);
+
+        cout << "*********************************" << endl << endl;
+
+        //Rysowanie pola wypelniania
+
+        textColor('G');
+        cout << "[ ";
+        for (int i = 0; i < IloscLiter; i++)
+        {
+            int check;
+
+            if (PolaWypelniania(IloscLiter, pozycja, Litera) == TabPorownanieZwpisem[i])
+            {
+                check = 1;
+            }
+            else
+            {
+                check = 0;
+            }
+
+            if (check ==1)
+            {
+               PokazywanieLiterek[i] = PolaWypelniania(IloscLiter, pozycja, Litera);
+            }
+            else
+            {
+                PokazywanieLiterek[i] = PustePole;
+            }
+
+            cout << PokazywanieLiterek[i] << " ";
+        }
+        cout << "]" << endl << endl;
+
+        cout << slowa[pozycja] << endl;
+
+        textColor();
+        cout << "*********************************" << endl << endl;
+
+        //////////////////////////////
+
+        cout << "1. Podaj litere" << endl;
+        cout << "2. Odgadnij haslo" << endl;
+        textColor('R');
+        cout << "co chcesz zrobic: "; cin >> wybor;
 
 
+        switch (wybor)
+        {
+        case 1:
+            textColor();
+            cout << "Podaj litere: "; cin >> Litera;
 
-    
+            Sleep(100);
 
+            system("cls");
+            break;
+        case 2:
+            textColor();
+            cout << "Podaj haslo: "; cin >> Haslo;
 
+            if (OdgadnijHaslo(slowa[pozycja], Haslo) == true)
+            {
+                
+                cout << "[ Brawo!]";
 
+                Sleep(300);
+                End = false;
+            }
+            else
+            {
+                cout << "[ Zle! ]";
+                Sleep(300);
+            }
 
+            Sleep(800);
 
+            system("cls");
+            break;
 
+        default:
+            system("cls");
 
+            textColor('R');
+            cout << "podaj liczbe z zakresu 1-2!" << endl;
+            textColor();
+           
+            exit(0);
 
+            break;
 
+        }
 
+    }
 
-
-  
     return 0;
 }
 
