@@ -32,57 +32,62 @@ void textColor(char c = 'W')
 
 string slowa[10] = { "pies","kot","klawiatura","tranzystor","kondensator","myszka","komputer","lampka","monitor","glowa" };
 
-//Wypełnainie tablic
+//  Wypełnainie tablic
 
-string PolaWypelniania(int x, int y, string z)
+string wypelnainiePola(int x, int y, int i, string z)
 {
-    int* wypelnianie;
-    string* porownanie;
+    int check = 0;
+
+    string TabPorownanieZwpisem[25];
     std::string PustePole = "_";
 
-    wypelnianie = new int[x];
-    porownanie = new string[x];
+        TabPorownanieZwpisem[i] = slowa[y][i];
 
-    for (int i = 0; i < x; i++)
-    {
-        porownanie[i] = slowa[y][i];
-
-        if (porownanie[i] == z)
+        if (z == TabPorownanieZwpisem[i])
         {
-            wypelnianie[i] = 1;
+            check = 1;
         }
         else
         {
-            wypelnianie[i] = 0;
+            check = 0;
         }
 
-    }
-
-    for (int i = 0; i < x; i++)
-    {
-        if (wypelnianie[i] == 0 && !(wypelnianie[i] == 1))
+        if (check == 1)
+        {
+            return z;
+        }
+        else
         {
             return PustePole;
         }
-        else
-        {
-            string literka = porownanie[i];
-            return literka;
-        }
-    }
+    
 }
 
 //Odgadywanie hasła
 
 bool OdgadnijHaslo(string x, string z)
 {
-    if (z == x) 
+    if (z == x)
 
+        return true;
+
+    else
+
+        return false;
+}
+
+// Porównywanie tablic
+
+bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
+{
+    for (int i = 0; i < rozmiar; i++) 
+    {
+        if (tab1[i] != tab2[i])
+        {
+            return false;
+        }
+    }
     return true;
-
-    else 
-
-    return false;
 }
 
 int main()
@@ -120,6 +125,13 @@ int main()
     system("cls");
 
 
+    for (int i = 0; i < IloscLiter; i++)
+    {
+        PokazywanieLiterek[i] = PustePole;
+    }
+
+
+
     while (End)
     {
         //Program własciwy
@@ -132,94 +144,92 @@ int main()
 
         cout << "*********************************" << endl << endl;
 
-        //Rysowanie pola wypelniania
-
-        textColor('G');
-        cout << "[ ";
-        for (int i = 0; i < IloscLiter; i++)
-        {
-            int check;
-
-            if (PolaWypelniania(IloscLiter, pozycja, Litera) == TabPorownanieZwpisem[i])
+     
+            //Rysowanie pola wypelniania
+            if (PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem))
             {
-                check = 1;
-            }
-            else
-            {
-                check = 0;
-            }
+                textColor('R');
+                cout << "[ Brawo, wygrales! ]" << endl << endl;
+                textColor();
 
-            if (check ==1)
-            {
-               PokazywanieLiterek[i] = PolaWypelniania(IloscLiter, pozycja, Litera);
-            }
-            else
-            {
-                PokazywanieLiterek[i] = PustePole;
-            }
-
-            cout << PokazywanieLiterek[i] << " ";
-        }
-        cout << "]" << endl << endl;
-
-        cout << slowa[pozycja] << endl;
-
-        textColor();
-        cout << "*********************************" << endl << endl;
-
-        //////////////////////////////
-
-        cout << "1. Podaj litere" << endl;
-        cout << "2. Odgadnij haslo" << endl;
-        textColor('R');
-        cout << "co chcesz zrobic: "; cin >> wybor;
-
-
-        switch (wybor)
-        {
-        case 1:
-            textColor();
-            cout << "Podaj litere: "; cin >> Litera;
-
-            Sleep(100);
-
-            system("cls");
-            break;
-        case 2:
-            textColor();
-            cout << "Podaj haslo: "; cin >> Haslo;
-
-            if (OdgadnijHaslo(slowa[pozycja], Haslo) == true)
-            {
-                
-                cout << "[ Brawo!]";
-
-                Sleep(300);
                 End = false;
             }
             else
             {
-                cout << "[ Zle! ]";
-                Sleep(300);
+
+                textColor('G');
+                cout << "[ ";
+                for (int i = 0; i < IloscLiter; i++)
+                {
+                    if (PokazywanieLiterek[i] == PustePole)
+                    {
+                        PokazywanieLiterek[i] = wypelnainiePola(IloscLiter, pozycja, i, Litera);
+                    }
+
+                    cout << PokazywanieLiterek[i] << " ";
+                }
+                cout << "]" << endl << endl;
+
+                cout << slowa[pozycja] << endl;
+
             }
 
-            Sleep(800);
-
-            system("cls");
-            break;
-
-        default:
-            system("cls");
-
-            textColor('R');
-            cout << "podaj liczbe z zakresu 1-2!" << endl;
             textColor();
-           
-            exit(0);
+            cout << "*********************************" << endl << endl;
 
-            break;
+            //////////////////////////////
 
-        }
+            cout << "1. Podaj litere" << endl;
+            cout << "2. Odgadnij haslo" << endl;
+            textColor('R');
+            cout << "co chcesz zrobic: "; cin >> wybor;
+
+
+            switch (wybor)
+            {
+            case 1:
+                textColor();
+                cout << "Podaj litere: "; cin >> Litera;
+
+                Sleep(100);
+
+                system("cls");
+                break;
+            case 2:
+                textColor();
+                cout << "Podaj haslo: "; cin >> Haslo;
+
+                if (OdgadnijHaslo(slowa[pozycja], Haslo) == true)
+                {
+
+                    cout << "[ Brawo!]";
+
+                    Sleep(300);
+                    End = false;
+                }
+                else
+                {
+                    cout << "[ Zle! ]";
+                    Sleep(300);
+                }
+
+                Sleep(800);
+
+                system("cls");
+                break;
+
+            default:
+                system("cls");
+
+                textColor('R');
+                cout << "podaj liczbe z zakresu 1-2!" << endl;
+                textColor();
+
+                exit(0);
+
+                break;
+
+            }
 
     }
 
