@@ -102,7 +102,7 @@ bool OdgadnijHaslo(string x, string z)
 
 bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
 {
-    for (int i = 0; i < rozmiar; i++) 
+    for (int i = 0; i < rozmiar; i++) s
     {
         if (tab1[i] != tab2[i])
         {
@@ -214,7 +214,6 @@ int main()
         }
         else
         {
-
 
             textColor('G');
             cout << "[ ";
