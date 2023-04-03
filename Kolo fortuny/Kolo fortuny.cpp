@@ -3,7 +3,9 @@
 #include <Windows.h>
 #include <stdlib.h> /* srand, rand */
 #include <time.h> /* time */
+#include <fstream>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
@@ -30,20 +32,25 @@ void textColor(char c = 'W')
     SetConsoleTextAttribute(hStdOut, colors);
 }
 
-string slowa[10] = { "pies","kot","klawiatura","tranzystor","kondensator","myszka","komputer","lampka","monitor","glowa" };
+fstream kategoria[5];
 
 //  Wypełnainie tablic
 
-string wypelnainiePola(int x, int y, int i, string z)
+string wypelnianiePola(string Haslo, int i, string litera)
 {
     int check = 0;
 
+    string Wielka_litera, Mala_litera;
+    string Tablica_Haslo = Haslo;
     string TabPorownanieZwpisem[25];
     std::string PustePole = "_";
 
-        TabPorownanieZwpisem[i] = slowa[y][i];
+        Mala_litera = towlower(int(litera[0]));
+        Wielka_litera = toupper(int(litera[0]));
 
-        if (z == TabPorownanieZwpisem[i])
+        TabPorownanieZwpisem[i] = Tablica_Haslo[i];
+
+        if (Wielka_litera == TabPorownanieZwpisem[i] || Mala_litera == TabPorownanieZwpisem[i])
         {
             check = 1;
         }
@@ -54,7 +61,14 @@ string wypelnainiePola(int x, int y, int i, string z)
 
         if (check == 1)
         {
-            return z;
+            if (i == 0)
+            {
+                return Wielka_litera;
+            }
+            else
+            {
+                return Mala_litera;
+            }
         }
         else
         {
@@ -92,24 +106,95 @@ bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
 
 int main()
 {
-    srand(time(NULL));
+    kategoria[0].open("Zwierzeta.txt", ios::in);
+    kategoria[1].open("Rosliny.txt", ios::in);
+    kategoria[2].open("Sprzet.txt", ios::in);
+    kategoria[3].open("Pojazdy.txt", ios::in);
+    kategoria[4].open("Kraje.txt", ios::in);
 
-    int pozycja = rand() % 10;
-    int IloscLiter = slowa[pozycja].length();
-    int wybor;
+    srand(time(NULL));
+    int RandKategoria = rand() % 5;
+    srand(time(NULL));
+    int RandHaslo = rand() % 3;
+
+    string Hasla[3];
+    string Kategoria_Nazwa;
 
     string Haslo, Litera;
-    std::string PustePole = "_";
+    string PustePole = "_";
     string PokazywanieLiterek[25];
     string TabPorownanieZwpisem[25];
 
     bool End = true;
 
+    //Przypisywanie nazwy kategori
+
+    switch (RandKategoria)
+    {
+    case 0:
+        Kategoria_Nazwa = "Zwierzeta";
+        break;
+
+    case 1:
+        Kategoria_Nazwa = "Rosliny";
+        break;
+
+    case 2:
+        Kategoria_Nazwa = "Sprzet";
+        break;
+
+    case 3:
+        Kategoria_Nazwa = "Pojazdy";
+        break;
+
+    case 4:
+        Kategoria_Nazwa = "Kraje";
+        break;
+    }
+    
+
+    //Losowanie kategorii i hasła
+
+    if (kategoria[RandKategoria].good() == false && !kategoria[RandKategoria].is_open())
+    {
+        system("cls");
+        textColor('R');
+
+        cout << "Plik nie istnieje lub jest otwarty!";
+
+        exit(0);
+    }
+
+    string LiniaZpliku;
+    int nr_linii = 1;
+
+    while (getline(kategoria[RandKategoria], LiniaZpliku))
+    {
+        switch (nr_linii)
+        {
+        case 1: Hasla[0] = LiniaZpliku; break;
+        case 2: Hasla[1] = LiniaZpliku; break;
+        case 3: Hasla[2] = LiniaZpliku; break;
+
+        }
+
+        nr_linii++;
+    }
+
+    kategoria[RandKategoria].close();
+
+
+    int IloscLiter = Hasla[RandHaslo].length();
+    int wybor;
+                
+     
+
+
     //Wypelnianie tablicy z porownaniem
 
     for (int i = 0; i < IloscLiter; i++)
     {
-        TabPorownanieZwpisem[i] = slowa[pozycja][i];
+        TabPorownanieZwpisem[i] = Hasla[RandHaslo][i];
     }
 
     // Animacja generowania hasła
@@ -139,6 +224,7 @@ int main()
         textColor();
         cout << "********* KOLO FORTUNY **********" << endl;
 
+        cout << "KATEGORIA: " << Kategoria_Nazwa << endl;
         cout << "liczba liter to: " << IloscLiter << endl;
         Sleep(100);
 
@@ -164,14 +250,14 @@ int main()
             {
                 if (PokazywanieLiterek[i] == PustePole)
                 {
-                    PokazywanieLiterek[i] = wypelnainiePola(IloscLiter, pozycja, i, Litera);
+                    PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, Litera);
                 }
 
                 cout << PokazywanieLiterek[i] << " ";
             }
             cout << "]" << endl << endl;
 
-            cout << slowa[pozycja] << endl;
+            cout << Hasla[RandHaslo] << endl;
 
         }
 
@@ -200,7 +286,7 @@ int main()
             textColor();
             cout << "Podaj haslo: "; cin >> Haslo;
 
-            if (OdgadnijHaslo(slowa[pozycja], Haslo) == true)
+            if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
             {
 
                 cout << "[ Brawo!]";
@@ -238,4 +324,3 @@ int main()
 
     return 0;
 }
-

@@ -129,6 +129,13 @@
   <ItemGroup>
     <ClCompile Include="Kolo fortuny.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Kraje.txt" />
+    <Text Include="Pojazdy.txt" />
+    <Text Include="Rosliny.txt" />
+    <Text Include="Sprzet.txt" />
+    <Text Include="Zwierzeta.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
