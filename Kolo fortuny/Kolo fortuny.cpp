@@ -32,7 +32,15 @@ void textColor(char c = 'W')
     SetConsoleTextAttribute(hStdOut, colors);
 }
 
-fstream kategoria[5];
+//Wielkosc tablicy hasel
+const int X = 100;
+
+//Liczba kategori
+const int Y = 5;
+
+fstream kategoria[Y];
+
+string nazwy_plikow[Y] = { "Kraje", "Pojazdy", "Rosliny", "Sprzet", "Zwierzeta" };
 
 //  Wypełnainie tablic
 
@@ -106,19 +114,11 @@ bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
 
 int main()
 {
-    kategoria[0].open("Zwierzeta.txt", ios::in);
-    kategoria[1].open("Rosliny.txt", ios::in);
-    kategoria[2].open("Sprzet.txt", ios::in);
-    kategoria[3].open("Pojazdy.txt", ios::in);
-    kategoria[4].open("Kraje.txt", ios::in);
-
     srand(time(NULL));
-    int RandKategoria = rand() % 5;
-    srand(time(NULL));
-    int RandHaslo = rand() % 3;
+    int RandKategoria = rand() % Y;
 
-    string Hasla[3];
-    string Kategoria_Nazwa;
+    string Hasla[X];
+    string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
 
     string Haslo, Litera;
     string PustePole = "_";
@@ -127,33 +127,8 @@ int main()
 
     bool End = true;
 
-    //Przypisywanie nazwy kategori
-
-    switch (RandKategoria)
-    {
-    case 0:
-        Kategoria_Nazwa = "Zwierzeta";
-        break;
-
-    case 1:
-        Kategoria_Nazwa = "Rosliny";
-        break;
-
-    case 2:
-        Kategoria_Nazwa = "Sprzet";
-        break;
-
-    case 3:
-        Kategoria_Nazwa = "Pojazdy";
-        break;
-
-    case 4:
-        Kategoria_Nazwa = "Kraje";
-        break;
-    }
-    
-
     //Losowanie kategorii i hasła
+    kategoria[RandKategoria].open(nazwy_plikow[RandKategoria]+".txt", ios::in);
 
     if (kategoria[RandKategoria].good() == false && !kategoria[RandKategoria].is_open())
     {
@@ -165,34 +140,28 @@ int main()
         exit(0);
     }
 
-    string LiniaZpliku;
+    string Linia_z_pliku;
     int nr_linii = 1;
 
-    while (getline(kategoria[RandKategoria], LiniaZpliku))
+    while (getline(kategoria[RandKategoria], Linia_z_pliku))
     {
-        switch (nr_linii)
-        {
-
-//dodać przypisywanie hasala w zalezności od i, oraz conts X dla tablicy stringów.
-
-        case 1: Hasla[0] = LiniaZpliku; break;
-        case 2: Hasla[1] = LiniaZpliku; break;
-        case 3: Hasla[2] = LiniaZpliku; break;
-
-        }
+  
+        Hasla[nr_linii-1] = Linia_z_pliku; 
 
         nr_linii++;
+
     }
 
     kategoria[RandKategoria].close();
+
+    srand(time(NULL));
+    int RandHaslo = rand() % nr_linii - 1;
 
 
     int IloscLiter = Hasla[RandHaslo].length();
     int wybor;
                 
      
-
-
     //Wypelnianie tablicy z porownaniem
 
     for (int i = 0; i < IloscLiter; i++)
