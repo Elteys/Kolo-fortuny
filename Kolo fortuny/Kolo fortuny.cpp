@@ -172,6 +172,9 @@ int main()
     {
         switch (nr_linii)
         {
+
+//dodać przypisywanie hasala w zalezności od i, oraz conts X dla tablicy stringów.
+
         case 1: Hasla[0] = LiniaZpliku; break;
         case 2: Hasla[1] = LiniaZpliku; break;
         case 3: Hasla[2] = LiniaZpliku; break;
