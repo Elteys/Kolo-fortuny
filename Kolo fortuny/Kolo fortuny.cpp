@@ -102,7 +102,7 @@ bool OdgadnijHaslo(string x, string z)
 
 bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
 {
-    for (int i = 0; i < rozmiar; i++) s
+    for (int i = 0; i < rozmiar; i++) 
     {
         if (tab1[i] != tab2[i])
         {
