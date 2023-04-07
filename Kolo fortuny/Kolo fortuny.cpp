@@ -33,7 +33,7 @@ void textColor(char c = 'W')
 }
 
 //Wielkosc tablicy hasel
-const int X = 100;
+const int X = 50;
 
 //Liczba kategori
 const int Y = 5;
@@ -112,10 +112,31 @@ bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
     return true;
 }
 
+bool Czy_Dobra_Litera(string litera, string Haslo[], int Ilosc_Liter)
+{
+    string Wielka_litera, Mala_litera;
+
+    Mala_litera = towlower(int(litera[0]));
+    Wielka_litera = toupper(int(litera[0]));
+
+    for (int i = 0; i < Ilosc_Liter; i++)
+    {
+        if (Mala_litera == Haslo[i] || Wielka_litera == Haslo[i])
+        {
+            return true;
+        }
+    }
+
+    return false;
+
+}
+
 int main()
 {
     srand(time(NULL));
     int RandKategoria = rand() % Y;
+
+    int Liczba_Rund = 1;
 
     string Hasla[X];
     string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
@@ -141,24 +162,33 @@ int main()
     }
 
     string Linia_z_pliku;
-    int nr_linii = 1;
+    int nr_lini = 1;
 
     while (getline(kategoria[RandKategoria], Linia_z_pliku))
     {
   
-        Hasla[nr_linii-1] = Linia_z_pliku; 
+        Hasla[nr_lini - 1] = Linia_z_pliku; 
 
-        nr_linii++;
+        nr_lini++;
 
     }
 
     kategoria[RandKategoria].close();
 
     srand(time(NULL));
-    int RandHaslo = rand() % nr_linii - 1;
+    int RandHaslo = rand() % nr_lini;
 
 
     int IloscLiter = Hasla[RandHaslo].length();
+
+    if (IloscLiter == 0)
+    {
+        system("cls");
+        cout << "Kategoria jest pusta!" << endl;
+
+        exit(0);
+    }
+     
     int wybor;
                 
      
@@ -195,12 +225,14 @@ int main()
 
         textColor();
         cout << "********* KOLO FORTUNY **********" << endl;
+        cout << "*********** RUNDA: " << Liczba_Rund << " ************" << endl << endl;
 
-        cout << "KATEGORIA: " << Kategoria_Nazwa << endl;
-        cout << "liczba liter to: " << IloscLiter << endl;
+        cout << "KATEGORIA: " << Kategoria_Nazwa << endl << endl;
+        cout << "liczba liter to: " << IloscLiter << endl << endl;
         Sleep(100);
 
         cout << "*********************************" << endl << endl;
+        cout <<  "     ";
 
 
         //Rysowanie pola wypelniania
@@ -228,7 +260,12 @@ int main()
             }
             cout << "]" << endl << endl;
 
+            
+            //Testowe pokazywanie hasla
+       
+            ///////////////////////////////////
             cout << Hasla[RandHaslo] << endl;
+            ///////////////////////////////////
 
         }
 
@@ -246,28 +283,65 @@ int main()
         switch (wybor)
         {
         case 1:
+
             textColor();
             cout << "Podaj litere: "; cin >> Litera;
+            cout << endl;
 
-            Sleep(100);
+            if (Czy_Dobra_Litera(Litera, TabPorownanieZwpisem, IloscLiter) == true)
+            {
+                textColor('Y');
+                cout << "###########################" << endl;
+                cout << "# Brawo, odgadles litere! #" << endl;
+                cout << "###########################" << endl;
+                textColor();
 
-            system("cls");
+                Sleep(1200);
+
+                system("cls");
+
+            }
+            else
+            {
+                textColor('Y');
+                cout << "##########" << endl;
+                cout << "# Pudlo! #" << endl;
+                cout << "##########" << endl;
+                textColor();
+
+                Sleep(1200);
+
+                system("cls");
+            }
+
+            Liczba_Rund++;
+
             break;
         case 2:
+
             textColor();
             cout << "Podaj haslo: "; cin >> Haslo;
+            cout << endl;
 
             if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
             {
 
-                cout << "[ Brawo!]";
+                textColor('Y');
+                cout << "##########" << endl;
+                cout << "# Brawo! #" << endl;
+                cout << "##########" << endl;
+                textColor();
 
                 Sleep(300);
                 End = false;
             }
             else
             {
-                cout << "[ Zle! ]";
+                textColor('Y');
+                cout << "########" << endl;
+                cout << "# Zle! #" << endl;
+                cout << "########" << endl;
+                textColor();
                 Sleep(300);
             }
 
@@ -280,7 +354,9 @@ int main()
             system("cls");
 
             textColor('R');
-            cout << "podaj liczbe z zakresu 1-2!" << endl;
+            cout << "###############################" << endl;
+            cout << "# Podaj liczbe z zakresu 1-2! #" << endl;
+            cout << "###############################" << endl;
             textColor();
 
             exit(0);
