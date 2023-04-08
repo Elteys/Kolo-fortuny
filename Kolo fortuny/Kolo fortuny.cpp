@@ -236,25 +236,26 @@ int main()
 
 
         //Rysowanie pola wypelniania
-            textColor('G');
-            cout << "[ ";
-            for (int i = 0; i < IloscLiter; i++)
+
+        textColor('G');
+        cout << "[ ";
+        for (int i = 0; i < IloscLiter; i++)
+        {
+            if (PokazywanieLiterek[i] == PustePole)
             {
-                if (PokazywanieLiterek[i] == PustePole)
-                {
-                    PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, Litera);
-                }
-
-                cout << PokazywanieLiterek[i] << " ";
+                PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, Litera);
             }
-            cout << "]" << endl << endl;
 
-            
-            //Testowe pokazywanie hasla
-       
-            ///////////////////////////////////
-            cout << Hasla[RandHaslo] << endl;
-            ///////////////////////////////////
+            cout << PokazywanieLiterek[i] << " ";
+        }
+        cout << "]" << endl << endl;
+
+
+        //Testowe pokazywanie hasla
+
+        ///////////////////////////////////
+        cout << Hasla[RandHaslo] << endl;
+        ///////////////////////////////////
 
         
 
