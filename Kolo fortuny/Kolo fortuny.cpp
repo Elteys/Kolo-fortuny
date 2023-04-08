@@ -45,7 +45,8 @@ fstream kategoria[Y];
 
 string nazwy_plikow[Y] = { "Kraje", "Pojazdy", "Sprzet", "Zwierzeta", "Rosliny"};
 
-int Kolo[] = { -1, 0, 100, 200, 100, 200, 100, 200, 500, 500, 1000, 1000, 1500, 2000, 3000, 5000 };
+int Kolo[] = { -1, 0, 100, 200, 100, 200, 100, 200, 500, 500, 1000, 1000, 1500, 2000, 3000, 5000 }; // -1 bankrut // 0 strata kolejki
+    
 
 struct Gracz {
     string imie;
@@ -235,10 +236,10 @@ int main()
     textColor('G');
     cout << endl;
     cout << "**************************" << endl;
-    cout << "Gracze to: " << endl;
+    textColor('B');
+    cout << "TOWJE LOBBY: " << endl;
     cout << endl;
 
-    textColor('B');
     for (int i = 0; i < GRACZE; i++)
     {
         
@@ -277,14 +278,14 @@ int main()
 
     while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem)) //Program własciwy
     {
-        Kolo_Los = Kolo[rand() % 15];
+        Kolo_Los = rand() % 15;
 
         textColor();
-        cout << "********* KOLO FORTUNY **********" << endl;
-        cout << "*********** RUNDA: " << Liczba_Rund << " ************" << endl << endl;
+        cout << "*********"; textColor('R'); cout << " KOLO FORTUNY "; textColor(); cout << "**********" << endl;
+        cout << "***********"; textColor('R'); cout << " RUNDA: " << Liczba_Rund; textColor(); cout << " ************" << endl << endl;
 
         cout << "KATEGORIA: " << Kategoria_Nazwa << endl << endl;
-        cout << "liczba liter to: " << IloscLiter << endl << endl;
+        cout << "LICZBA LITER: " << IloscLiter << endl << endl;
         Sleep(100);
 
         cout << "*********************************" << endl << endl;
@@ -318,15 +319,51 @@ int main()
         cout << "1. Krec kolem" << endl;
         cout << "2. Odgadnij haslo" << endl;
         textColor('R');
-        cout << "co chcesz zrobic: "; cin >> wybor;
+        cout << "Co chcesz zrobic? --> "; cin >> wybor;
 
         switch (wybor)
         {
         case 1:
+            if (Kolo_Los == 0)
+            {
+                cout << endl;
+                textColor('Y');
+                cout << "############" << endl;
+                cout << "# Bankrut! #" << endl;
+                cout << "############" << endl;
+                textColor();
+
+                Sleep(1000);
+
+                system("cls");
+
+                Liczba_Rund++;
+
+                break;
+            }
+            if (Kolo_Los == 1)
+            {
+                cout << endl;
+                textColor('Y');
+                cout << "##################" << endl;
+                cout << "# Strata kolejki!#" << endl;
+                cout << "##################" << endl;
+                textColor();
+
+                Sleep(1000);
+
+                system("cls");
+
+                Liczba_Rund++;
+
+                break;
+            }
+
+            cout << endl;
             textColor('B');
-            cout << Kolo_Los << endl;
+            cout << Kolo[Kolo_Los] << endl;
             textColor();
-            cout << "Podaj litere: "; cin >> Litera;
+            cout << "Podaj litere: "; textColor('Y'); cin >> Litera;
             cout << endl;
 
             if (Czy_Dobra_Litera(Litera, TabPorownanieZwpisem, IloscLiter) == true)
@@ -355,11 +392,14 @@ int main()
                 system("cls");
             }
 
+            Liczba_Rund++;
+
             break;
         case 2:
 
             textColor();
-            cout << "Podaj haslo: "; cin >> Haslo;
+            cout << "Podaj haslo: "; textColor('Y'); cin >> Haslo;
+            textColor();
             cout << endl;
 
             if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
@@ -379,23 +419,24 @@ int main()
             Sleep(800);
 
             system("cls");
+
+            Liczba_Rund++;
+
             break;
 
         default:
             system("cls");
 
             textColor('R');
-            cout << "###############################" << endl;
-            cout << "# Podaj liczbe z zakresu 1-2! #" << endl;
-            cout << "###############################" << endl;
+            cout << "#################################" << endl;
+            cout << "#  Podaj liczbe z zakresu 1-2!  #" << endl;
+            cout << "#################################" << endl << endl;
             textColor();
-
-            exit(0);
+        
+            Sleep(1000);
 
             break;
         }
-
-        Liczba_Rund++;
 
     }
 
