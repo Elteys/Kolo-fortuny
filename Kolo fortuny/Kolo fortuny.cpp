@@ -106,10 +106,10 @@ bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
     {
         if (tab1[i] != tab2[i])
         {
-            return false;
+            return true;
         }
     }
-    return true;
+    return false;
 }
 
 bool Czy_Dobra_Litera(string litera, string Haslo[], int Ilosc_Liter)
@@ -219,7 +219,7 @@ int main()
 
 
 
-    while (End)
+    while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem))
     {
         //Program własciwy
 
@@ -236,17 +236,6 @@ int main()
 
 
         //Rysowanie pola wypelniania
-        if (PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem))
-        {
-            textColor('R');
-            cout << "[ Brawo, wygrales! ]" << endl << endl;
-            textColor();
-
-            End = false;
-        }
-        else
-        {
-
             textColor('G');
             cout << "[ ";
             for (int i = 0; i < IloscLiter; i++)
@@ -267,7 +256,7 @@ int main()
             cout << Hasla[RandHaslo] << endl;
             ///////////////////////////////////
 
-        }
+        
 
         textColor();
         cout << "*********************************" << endl << endl;
@@ -296,7 +285,7 @@ int main()
                 cout << "###########################" << endl;
                 textColor();
 
-                Sleep(1200);
+                Sleep(1000);
 
                 system("cls");
 
@@ -309,12 +298,10 @@ int main()
                 cout << "##########" << endl;
                 textColor();
 
-                Sleep(1200);
+                Sleep(1000);
 
                 system("cls");
             }
-
-            Liczba_Rund++;
 
             break;
         case 2:
@@ -326,13 +313,6 @@ int main()
             if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
             {
 
-                textColor('Y');
-                cout << "##########" << endl;
-                cout << "# Brawo! #" << endl;
-                cout << "##########" << endl;
-                textColor();
-
-                Sleep(300);
                 End = false;
             }
             else
@@ -365,9 +345,14 @@ int main()
 
         }
 
-           
+        Liczba_Rund++;
 
     }
+
+    textColor('R');
+    cout << "[ Brawo, wygrales! ]" << endl << endl;
+    textColor();
+
 
     return 0;
 }
