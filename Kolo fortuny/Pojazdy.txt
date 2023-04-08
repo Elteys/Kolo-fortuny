@@ -1,3 +1,5 @@
 Auto
 Rower
 Tramwaj
+Czolg
+Rolki

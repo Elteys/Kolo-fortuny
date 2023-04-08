@@ -1,3 +1,5 @@
 Drzewo
 Kwiatek
 Krzak
+Trawa
+Liana
