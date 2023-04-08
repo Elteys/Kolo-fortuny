@@ -55,7 +55,7 @@ struct Gracz {
 
 struct Gracz TAB_gracze[GRACZE];
 
-//  Wypełnainie tablic
+//Wypełnainie tablic
 
 string wypelnianiePola(string Haslo, int i, string litera)
 {
@@ -125,6 +125,8 @@ bool PorownajTablice(int rozmiar, string tab1[], string tab2[])
     return false;
 }
 
+//Sprawdzanie litery
+
 bool Czy_Dobra_Litera(string litera, string Haslo[], int Ilosc_Liter)
 {
     string Wielka_litera, Mala_litera;
@@ -154,6 +156,7 @@ int main()
     int wybor;
     int RandHaslo;
     int IloscLiter;
+    int nr_lini = 0;
 
     string Hasla[X];
     string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
@@ -162,11 +165,13 @@ int main()
 
     string Haslo;
     string Litera;
+    string Linia_z_pliku;
     string PustePole = "_";
  
     bool End = true;
 
-    //Losowanie kategorii i hasła
+    //Losowanie kategorii
+
     kategoria[RandKategoria].open(nazwy_plikow[RandKategoria]+".txt", ios::in);
 
     if (kategoria[RandKategoria].good() == false && !kategoria[RandKategoria].is_open())
@@ -179,8 +184,7 @@ int main()
         exit(0);
     }
 
-    string Linia_z_pliku;
-    int nr_lini = 0;
+    //Przypisywanie hasel do tablicy
 
     while (getline(kategoria[RandKategoria], Linia_z_pliku))
     {
@@ -193,8 +197,7 @@ int main()
 
     kategoria[RandKategoria].close();
 
-    //Sprawdza czy kategoria jest pusta czyli ma 0 lini
-    if (nr_lini == 0)
+    if (nr_lini == 0) //Sprawdza czy kategoria jest pusta (czyli ma 0 lini)
     {
         system("cls");
         cout << "Kategoria jest pusta!" << endl;
@@ -202,21 +205,22 @@ int main()
         exit(0);
     }
 
+    //Losowanie hasla
+
     srand(time(NULL));
     RandHaslo = rand() % nr_lini;
 
     //Ilosc liter
+
     IloscLiter = Hasla[RandHaslo].length();
                 
-     
-    //Wypelnianie tablicy z porownaniem
-
-    for (int i = 0; i < IloscLiter; i++)
+    for (int i = 0; i < IloscLiter; i++) //Wypelnianie tablicy z porownaniem
     {
         TabPorownanieZwpisem[i] = Hasla[RandHaslo][i];
     }
     
     //Podaj imiona graczy
+
     textColor('G');
     cout << "**************************" << endl;
     cout << "Podaj imiona graczy " << "(" << GRACZE << "): " << endl;
@@ -226,7 +230,6 @@ int main()
         textColor('G');
         cout << endl;
         cout << "[ " << i + 1 << " ]: "; textColor('B'); getline(cin, TAB_gracze[i].imie);
-        
     }
 
     textColor('G');
@@ -259,7 +262,7 @@ int main()
     textColor('G');
     cout << "------- GENEROWANIE HASLA -------" << endl;
 
-    for (int i = 0; i < 10; i++)
+    for (int i = 0; i < 10; i++) 
     {
         cout << "---------------------------------" << endl;
         Sleep(100);
@@ -272,12 +275,8 @@ int main()
         PokazywanieLiterek[i] = PustePole;
     }
 
-
-
-    while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem))
+    while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem)) //Program własciwy
     {
-        //Program własciwy
-
         Kolo_Los = Kolo[rand() % 15];
 
         textColor();
@@ -314,18 +313,12 @@ int main()
         cout << Hasla[RandHaslo] << endl;
         ///////////////////////////////////
 
-        
-
         textColor();
         cout << "*********************************" << endl << endl;
-
-        //////////////////////////////
-
         cout << "1. Krec kolem" << endl;
         cout << "2. Odgadnij haslo" << endl;
         textColor('R');
         cout << "co chcesz zrobic: "; cin >> wybor;
-
 
         switch (wybor)
         {
@@ -371,7 +364,6 @@ int main()
 
             if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
             {
-
                 End = false;
             }
             else
@@ -401,7 +393,6 @@ int main()
             exit(0);
 
             break;
-
         }
 
         Liczba_Rund++;
@@ -411,7 +402,6 @@ int main()
     textColor('R');
     cout << "[ Brawo, wygrales! ]" << endl << endl;
     textColor();
-
 
     return 0;
 }
