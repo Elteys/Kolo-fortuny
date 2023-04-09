@@ -163,7 +163,6 @@ int main()
     string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
     string PokazywanieLiterek[25];
     string TabPorownanieZwpisem[25];
-    string Kolejnosc_graczy[GRACZE];
 
     string Haslo;
     string Litera;
@@ -289,7 +288,6 @@ int main()
         textColor('B');
         for (int i = 0; i < GRACZE; i++)
         {
-            Kolejnosc_graczy[i] = TAB_gracze[i].imie;
             cout << TAB_gracze[i].imie << endl;
         }
         textColor();
