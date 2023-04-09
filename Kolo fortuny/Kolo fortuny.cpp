@@ -234,8 +234,8 @@ int main()
         cout << "[ " << i + 1 << " ]: "; textColor('B'); getline(cin, TAB_gracze[i].imie);
     }
 
+    system("cls");
     textColor('G');
-    cout << endl;
     cout << "**************************" << endl;
     textColor('B');
     cout << "TOWJE LOBBY: " << endl;
@@ -295,7 +295,7 @@ int main()
         textColor();
         cout << endl;
         cout << "*********************************" << endl << endl;
-        cout <<  "     ";
+        cout << "     ";
 
 
         //Rysowanie pola wypelniania
@@ -410,7 +410,13 @@ int main()
 
             if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
             {
+                system("cls");
+                textColor('R');
+                cout << "[ Brawo, wygrales! ]" << endl << endl;
+                textColor();
+
                 End = false;
+                exit(0);
             }
             else
             {
@@ -438,17 +444,13 @@ int main()
             cout << "#  Podaj liczbe z zakresu 1-2!  #" << endl;
             cout << "#################################" << endl << endl;
             textColor();
-        
+
             Sleep(1000);
 
             break;
         }
 
     }
-
-    textColor('R');
-    cout << "[ Brawo, wygrales! ]" << endl << endl;
-    textColor();
 
     return 0;
 }
