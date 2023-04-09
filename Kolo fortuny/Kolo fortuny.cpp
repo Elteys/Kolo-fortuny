@@ -50,8 +50,8 @@ int Kolo[] = { -1, 0, 100, 200, 100, 200, 100, 200, 500, 500, 1000, 1000, 1500, 
 
 struct Gracz {
     string imie;
-    int kasa = 0;
-    int portfel = 0; //Kasa z wygranej RUNDY
+    int kasa = 0; //Kasa z wygranej RUNDY
+    int portfel = 0; 
 };
 
 struct Gracz TAB_gracze[GRACZE];
@@ -65,7 +65,7 @@ string wypelnianiePola(string Haslo, int i, string litera)
     string Wielka_litera, Mala_litera;
     string Tablica_Haslo = Haslo;
     string TabPorownanieZwpisem[25];
-    std::string PustePole = "_";
+    string PustePole = "_";
 
         Mala_litera = towlower(int(litera[0]));
         Wielka_litera = toupper(int(litera[0]));
@@ -158,6 +158,7 @@ int main()
     int RandHaslo;
     int IloscLiter;
     int nr_lini = 0;
+    int Kolejnosc_graczy = 2;
 
     string Hasla[X];
     string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
@@ -278,6 +279,7 @@ int main()
 
     while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem)) //Program własciwy
     {
+        Kolejnosc_graczy = (Kolejnosc_graczy + 1) % GRACZE;
         Kolo_Los = rand() % 15;
 
         textColor();
@@ -288,7 +290,14 @@ int main()
         textColor('B');
         for (int i = 0; i < GRACZE; i++)
         {
-            cout << TAB_gracze[i].imie << endl;
+            if (i == Kolejnosc_graczy)
+            {
+                textColor('P'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].kasa << " )" << endl;
+            }
+            else
+            {
+                textColor('B'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].kasa << " )" << endl;
+            }
         }
         textColor();
         cout << endl;
@@ -330,6 +339,8 @@ int main()
         case 1:
             if (Kolo_Los == 0)
             {
+                TAB_gracze[Kolejnosc_graczy].kasa = 0;
+
                 cout << endl;
                 textColor('Y');
                 cout << "############" << endl;
@@ -372,6 +383,8 @@ int main()
 
             if (Czy_Dobra_Litera(Litera, TabPorownanieZwpisem, IloscLiter) == true)
             {
+                TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa + Kolo[Kolo_Los];
+
                 textColor('Y');
                 cout << "###########################" << endl;
                 cout << "# Brawo, odgadles litere! #" << endl;
@@ -410,7 +423,7 @@ int main()
             {
                 system("cls");
                 textColor('R');
-                cout << "[ Brawo, wygrales! ]" << endl << endl;
+                cout << "[ Gracz " << TAB_gracze[Kolejnosc_graczy].imie <<  " wygrywa gre! ]" << endl << endl;
                 textColor();
 
                 End = false;
