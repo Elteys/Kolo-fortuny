@@ -163,6 +163,7 @@ int main()
     string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
     string PokazywanieLiterek[25];
     string TabPorownanieZwpisem[25];
+    string Kolejnosc_graczy[GRACZE];
 
     string Haslo;
     string Litera;
@@ -283,11 +284,16 @@ int main()
         textColor();
         cout << "*********"; textColor('R'); cout << " KOLO FORTUNY "; textColor(); cout << "**********" << endl;
         cout << "***********"; textColor('R'); cout << " RUNDA: " << Liczba_Rund; textColor(); cout << " ************" << endl << endl;
-
         cout << "KATEGORIA: " << Kategoria_Nazwa << endl << endl;
         cout << "LICZBA LITER: " << IloscLiter << endl << endl;
-        Sleep(100);
-
+        textColor('B');
+        for (int i = 0; i < GRACZE; i++)
+        {
+            Kolejnosc_graczy[i] = TAB_gracze[i].imie;
+            cout << TAB_gracze[i].imie << endl;
+        }
+        textColor();
+        cout << endl;
         cout << "*********************************" << endl << endl;
         cout <<  "     ";
 
