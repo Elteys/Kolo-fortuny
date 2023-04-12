@@ -154,11 +154,12 @@ int main()
 
     int Liczba_Rund = 1;
     int Kolo_Los;
-    int wybor;
     int RandHaslo;
     int IloscLiter;
     int nr_lini = 0;
     int Kolejnosc_graczy = 2;
+
+    char wybor;
 
     string Hasla[X];
     string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
@@ -333,10 +334,11 @@ int main()
         cout << "2. Odgadnij haslo" << endl;
         textColor('R');
         cout << "Co chcesz zrobic? --> "; cin >> wybor;
+        cin.ignore();
 
         switch (wybor)
         {
-        case 1:
+        case '1':
             if (Kolo_Los == 0)
             {
                 TAB_gracze[Kolejnosc_graczy].kasa = 0;
@@ -412,7 +414,7 @@ int main()
             Liczba_Rund++;
 
             break;
-        case 2:
+        case '2':
 
             textColor();
             cout << "Podaj haslo: "; textColor('Y'); cin >> Haslo;
@@ -421,13 +423,7 @@ int main()
 
             if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
             {
-                system("cls");
-                textColor('R');
-                cout << "[ Gracz " << TAB_gracze[Kolejnosc_graczy].imie <<  " wygrywa gre! ]" << endl << endl;
-                textColor();
-
                 End = false;
-                exit(0);
             }
             else
             {
@@ -460,8 +456,14 @@ int main()
 
             break;
         }
-
     }
+
+    // Koniec programu
+
+    system("cls");
+    textColor('R');
+    cout << "[ Gracz " << TAB_gracze[Kolejnosc_graczy].imie << " wygrywa gre! ]" << endl << endl;
+    textColor();
 
     return 0;
 }
