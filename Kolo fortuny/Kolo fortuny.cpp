@@ -66,7 +66,7 @@ string wypelnianiePola(string Haslo, int i, string litera)
     string Tablica_Haslo = Haslo;
     string TabPorownanieZwpisem[25];
     string PustePole = "_";
-
+    
         Mala_litera = towlower(int(litera[0]));
         Wielka_litera = toupper(int(litera[0]));
 
@@ -159,6 +159,7 @@ int main()
     int nr_lini = 0;
     int Kolejnosc_graczy = 2;
 
+    char wybor_kolo;
     char wybor;
 
     string Hasla[X];
@@ -171,6 +172,7 @@ int main()
     string Linia_z_pliku;
     string PustePole = "_";
  
+    bool end_kolo = true;
     bool End = true;
 
     //Losowanie kategorii
@@ -334,7 +336,6 @@ int main()
         cout << "2. Odgadnij haslo" << endl;
         textColor('R');
         cout << "Co chcesz zrobic? --> "; cin >> wybor;
-        cin.ignore();
 
         switch (wybor)
         {
@@ -378,10 +379,30 @@ int main()
 
             cout << endl;
             textColor('B');
-            cout << Kolo[Kolo_Los] << endl;
+            cout << "[ " << Kolo[Kolo_Los] << " ]" << endl << endl;
             textColor();
-            cout << "Podaj litere: "; textColor('Y'); cin >> Litera;
+            cout << "1. Podaj litere" << endl;
+            cout << "2. Kup samogloske" << endl;
+            cout << "3. Kup spolgloske" << endl;
+            cout << "---> "; textColor('Y'); cin >> wybor_kolo;
             cout << endl;
+
+            switch (wybor_kolo)
+            {
+            case '1':
+                    textColor();
+                    cout << "Podaj litere: "; textColor('Y'); cin >> Litera;
+                    cout << endl;
+                    break;
+            case '2':
+                break;
+            case '3':
+                break;
+            default:
+                break;
+            }
+
+           
 
             if (Czy_Dobra_Litera(Litera, TabPorownanieZwpisem, IloscLiter) == true)
             {
