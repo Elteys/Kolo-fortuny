@@ -1,5 +1,5 @@
-Komputer
-Telefon
-Tablet
-Monitor
-Laptop
+Komputer_sadad
+Telefon_ad
+Tablet_ad
+Monitor_ad
+Laptop_asd

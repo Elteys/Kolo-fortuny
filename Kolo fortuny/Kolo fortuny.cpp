@@ -43,7 +43,7 @@ const int GRACZE = 3;
 
 fstream kategoria[Y];
 
-string nazwy_plikow[Y] = { "Kraje", "Pojazdy", "Sprzet", "Zwierzeta", "Rosliny"};
+string nazwy_plikow[Y] = { "Kraje", "Pojazdy", "Sprzet", "Zwierzeta", "Rosliny" };
 
 int Kolo[] = { -1, 0, 100, 200, 100, 200, 100, 200, 500, 500, 1000, 1000, 1500, 2000, 3000, 5000 }; // -1 bankrut // 0 strata kolejki
     
@@ -66,6 +66,7 @@ string wypelnianiePola(string Haslo, int i, string litera)
     string Tablica_Haslo = Haslo;
     string TabPorownanieZwpisem[25];
     string PustePole = "_";
+    string Spacja = " ";
     
         Mala_litera = towlower(int(litera[0]));
         Wielka_litera = toupper(int(litera[0]));
@@ -94,22 +95,14 @@ string wypelnianiePola(string Haslo, int i, string litera)
         }
         else
         {
+            if (TabPorownanieZwpisem[i] == "_")
+            {
+                return Spacja;
+            }
+
             return PustePole;
         }
     
-}
-
-//Odgadywanie hasła
-
-bool OdgadnijHaslo(string x, string z)
-{
-    if (z == x)
-
-        return true;
-
-    else
-
-        return false;
 }
 
 // Porównywanie tablic
@@ -172,7 +165,6 @@ int main()
     string Linia_z_pliku;
     string PustePole = "_";
  
-    bool end_kolo = true;
     bool End = true;
 
     //Losowanie kategorii
@@ -226,40 +218,78 @@ int main()
     
     //Podaj imiona graczy
 
-    textColor('G');
-    cout << "**************************" << endl;
-    cout << "Podaj imiona graczy " << "(" << GRACZE << "): " << endl;
-    
-    for (int i = 0; i < GRACZE; i++)
+    while (true)
     {
+        system("cls");
+
         textColor('G');
+        cout << "**************************" << endl;
+        cout << "Podaj imiona graczy " << "(" << GRACZE << "): " << endl;
+
+        for (int i = 0; i < GRACZE; i++)
+        {
+            textColor('G');
+            cout << endl;
+            cout << "[ " << i + 1 << " ]: "; textColor('B'); getline(cin, TAB_gracze[i].imie);
+        }
+
+        system("cls");
+        textColor('G');
+        cout << "**************************" << endl;
+        textColor('B');
+        cout << "TOWJE LOBBY: " << endl;
         cout << endl;
-        cout << "[ " << i + 1 << " ]: "; textColor('B'); getline(cin, TAB_gracze[i].imie);
+
+        for (int i = 0; i < GRACZE; i++)
+        {
+
+            cout << "-  " << TAB_gracze[i].imie << endl;
+
+        }
+
+        cout << endl;
+        textColor('R');
+        cout << "Chcesz edytowac?" << endl;
+        cout << "1.KONTYNUUJ" << endl;
+        cout << "2.EDYTUJ" << endl;
+        cout << "---> ";
+        while (true) { // usuwanie znakow z bufora wejsciowego
+            while (_kbhit()) {
+                _getch();
+            }
+            wybor = _getch();
+            break;
+        }
+
+        if (wybor == '1')
+        {
+            break;
+        }
+
     }
 
-    system("cls");
-    textColor('G');
-    cout << "**************************" << endl;
-    textColor('B');
-    cout << "TOWJE LOBBY: " << endl;
-    cout << endl;
-
-    for (int i = 0; i < GRACZE; i++)
+    // Animacja 
+    cout << endl << endl ;
+    for (int i = 0; i < 6; i++)
     {
-        
-        cout << "-  " << TAB_gracze[i].imie << endl;
+        int queue = i % 3;
+        switch (queue)
+        {
+        case 0:
+            textColor('B');
+            break;
+        case 1:
+            textColor('Y');
+            break;
+        case 2:
+            textColor('G');
+            break;
+        }
 
+        cout << "OK! ";
+        Sleep(150);
     }
 
-    cout << endl;
-    textColor('R');
-    cout << "* Kliknij ENTER aby kontynuwoac *";
-    cin.ignore();
-
-    cout << endl;
-    textColor('R');
-    cout << "OK! OK! OK!" << endl;
-    Sleep(800);
     system("cls");
 
     // Animacja generowania hasła
@@ -267,8 +297,26 @@ int main()
     textColor('G');
     cout << "------- GENEROWANIE HASLA -------" << endl;
 
-    for (int i = 0; i < 10; i++) 
+    for (int i = 0; i < 12; i++) 
     {
+        int queue = i % 4;
+        switch (queue)
+        {
+        case 0:
+            textColor('R');
+            break;
+        case 1:
+            textColor('G');
+            break;
+        case 2:
+            textColor('B');
+            break;
+        case 3:
+            textColor('Y');
+            break;
+        }
+        
+
         cout << "---------------------------------" << endl;
         Sleep(100);
     }
@@ -334,8 +382,18 @@ int main()
         cout << "*********************************" << endl << endl;
         cout << "1. Krec kolem" << endl;
         cout << "2. Odgadnij haslo" << endl;
+        cout << "3. Kup samogloske" << endl;
+        cout << "4. Kup spolgloske" << endl;
         textColor('R');
-        cout << "Co chcesz zrobic? --> "; cin >> wybor;
+        cout << "Co chcesz zrobic? --> ";
+        while (true) { // usuwanie znakow z bufora wejsciowego
+            while (_kbhit()) {
+                _getch();
+            }
+            wybor = _getch();
+            cout << "Wybrales: " << wybor << endl;
+            break;
+        }
 
         switch (wybor)
         {
@@ -377,32 +435,13 @@ int main()
                 break;
             }
 
+            cin.ignore();
             cout << endl;
             textColor('B');
             cout << "[ " << Kolo[Kolo_Los] << " ]" << endl << endl;
             textColor();
-            cout << "1. Podaj litere" << endl;
-            cout << "2. Kup samogloske" << endl;
-            cout << "3. Kup spolgloske" << endl;
-            cout << "---> "; textColor('Y'); cin >> wybor_kolo;
+            cout << "Podaj litere: "; textColor('Y'); cin >> Litera;
             cout << endl;
-
-            switch (wybor_kolo)
-            {
-            case '1':
-                    textColor();
-                    cout << "Podaj litere: "; textColor('Y'); cin >> Litera;
-                    cout << endl;
-                    break;
-            case '2':
-                break;
-            case '3':
-                break;
-            default:
-                break;
-            }
-
-           
 
             if (Czy_Dobra_Litera(Litera, TabPorownanieZwpisem, IloscLiter) == true)
             {
@@ -436,13 +475,21 @@ int main()
 
             break;
         case '2':
-
+            cin.ignore();
+            cout << endl;
             textColor();
-            cout << "Podaj haslo: "; textColor('Y'); cin >> Haslo;
+            cout << "Podaj haslo: "; textColor('Y'); getline(cin, Haslo); // wczytaj całą linię tekstu, w tym spacje
             textColor();
             cout << endl;
+            
+            // zamień spacje na podkreślenia
+            for (int i = 0; i < Haslo.length(); i++) {
+                if (Haslo[i] == ' ') {
+                    Haslo[i] = '_';
+                }
+            }
 
-            if (OdgadnijHaslo(Hasla[RandHaslo], Haslo) == true)
+            if (Hasla[RandHaslo] == Haslo)
             {
                 End = false;
             }
@@ -463,7 +510,17 @@ int main()
             Liczba_Rund++;
 
             break;
+        case '3':
 
+            system("cls");
+
+            break;
+        case '4':
+
+
+            system("cls");
+
+            break;
         default:
             system("cls");
 
