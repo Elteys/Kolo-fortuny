@@ -249,9 +249,8 @@ int main()
 
         cout << endl;
         textColor('R');
-        cout << "Chcesz edytowac?" << endl;
-        cout << "1.KONTYNUUJ" << endl;
-        cout << "2.EDYTUJ" << endl;
+        cout << "Kliknij dowolny klawisz by kontynuowac..." << endl << endl;
+        cout << "Lub klawisz \"1\" aby edytowac. " << endl << endl;
         cout << "---> ";
         while (true) { // usuwanie znakow z bufora wejsciowego
             while (_kbhit()) {
@@ -261,7 +260,7 @@ int main()
             break;
         }
 
-        if (wybor == '1')
+        if (wybor != '1')
         {
             break;
         }
@@ -385,15 +384,8 @@ int main()
         cout << "3. Kup samogloske" << endl;
         cout << "4. Kup spolgloske" << endl;
         textColor('R');
-        cout << "Co chcesz zrobic? --> ";
-        while (true) { // usuwanie znakow z bufora wejsciowego
-            while (_kbhit()) {
-                _getch();
-            }
-            wybor = _getch();
-            cout << "Wybrales: " << wybor << endl;
-            break;
-        }
+        cout << "Co chcesz zrobic? --> "; wybor = cin.get();
+        
 
         switch (wybor)
         {
@@ -523,13 +515,13 @@ int main()
             break;
         default:
             system("cls");
-
+ 
             textColor('R');
             cout << "#################################" << endl;
             cout << "#  Podaj liczbe z zakresu 1-2!  #" << endl;
             cout << "#################################" << endl << endl;
             textColor();
-
+            
             Sleep(1000);
 
             break;
