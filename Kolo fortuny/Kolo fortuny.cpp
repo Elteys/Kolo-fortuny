@@ -384,7 +384,7 @@ int main()
         cout << "3. Kup samogloske" << endl;
         cout << "4. Kup spolgloske" << endl;
         textColor('R');
-        cout << "Co chcesz zrobic? --> "; wybor = cin.get();
+        cout << "Co chcesz zrobic? --> "; cin >> wybor;
         
 
         switch (wybor)
