@@ -286,13 +286,8 @@ int main()
     system("cls");
 
     //RUNDA
-    while (true)
+    do
     {
-        if (Runda == 3)
-        {
-            break;
-        }
-
         //Losowanie kategorii
         srand(time(NULL));
         int RandKategoria = rand() % Y;
@@ -337,6 +332,8 @@ int main()
         srand(time(NULL));
         RandHaslo = rand() % nr_lini;
 
+        nr_lini = 0; //Czyszczenie lini
+
         //Ilosc liter
 
         IloscLiter = Hasla[RandHaslo].length();
@@ -353,7 +350,7 @@ int main()
 
         srand(time(NULL));
         Kolejnosc_graczy = rand() % 3;
-        while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem)) //RUNDA
+        while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem) && Runda) //RUNDA
         {
             if (Next)
             {
@@ -628,10 +625,12 @@ int main()
 
         }
 
+        
         // Koniec rundy
         End = true;
         ++Runda;
         Kolejnosc_graczy = rand() % 3;
+
         for (int i = 0; i < 25; i++)
         {
             Hasla[i].clear();
@@ -677,28 +676,32 @@ int main()
             Sleep(100);
             system("cls");
         }
-    }
+
+    } while (Runda < (LICZBA_RUND + 1));
+
     //koniec programu
     int najwiekszy = TAB_gracze[0].portfel;
-    string winner;
+    int winner = 0;
 
-    for (int i = 0; i < 5; i++) {
+    for (int i = 0; i < GRACZE; i++) {
         if (TAB_gracze[i].portfel > najwiekszy) 
         {
             najwiekszy = TAB_gracze[i].portfel;
 
-            winner = TAB_gracze[i].imie;
+            winner = i;
         }
     }
 
     system("cls");
-    cout << "[ Gracz "; textColor('Y'); cout << winner; textColor(); cout << " wygrywa runde! ]" << endl << endl;
+    textColor();
+    cout << "[ Gracz "; textColor('Y'); cout << TAB_gracze[winner].imie; textColor(); cout << " WYGRYWA GRE! ]" << endl << endl;
+    textColor('B');
     cout << "Wyniki: " << endl;
     for (int i = 0; i < GRACZE; i++)
     {
-        if (TAB_gracze[i].imie == winner)
+        if (i == winner)
         {
-            textColor('P'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].portfel << " )" << endl; textColor();
+            textColor('P'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].portfel << " ) [ W I N ]" << endl; textColor();
         }
         else
         {
