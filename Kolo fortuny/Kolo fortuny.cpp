@@ -45,6 +45,8 @@ fstream kategoria[Y];
 
 string nazwy_plikow[Y] = { "Kraje", "Pojazdy", "Sprzet", "Zwierzeta", "Rosliny" };
 
+string TAB_samogloski[12] = {"a", "A", "e", "E", "i", "I", "o", "O", "u", "U", "y", "Y"};
+
 int Kolo[] = { -1, 0, 100, 200, 100, 200, 100, 200, 500, 500, 1000, 1000, 1500, 2000, 3000, 5000 }; // -1 bankrut // 0 strata kolejki
     
 
@@ -140,6 +142,17 @@ bool Czy_Dobra_Litera(string litera, string Haslo[], int Ilosc_Liter)
 
 }
 
+int jest_samogloska(string Litera)
+{
+    if (Litera == "a" || Litera == "e" || Litera == "i" || Litera == "o" || Litera == "u" || Litera == "y" ||
+        Litera == "A" || Litera == "E" || Litera == "I" || Litera == "O" || Litera == "U" || Litera == "Y")
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
 int main()
 {
     srand(time(NULL));
@@ -162,10 +175,13 @@ int main()
 
     string Haslo;
     string Litera;
+    string samogloska;
     string Linia_z_pliku;
     string PustePole = "_";
  
     bool End = true;
+    bool Next = true;
+    bool Moze_odgadnac_samogloske = false;
 
     //Losowanie kategorii
 
@@ -329,7 +345,12 @@ int main()
 
     while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem)) //Program własciwy
     {
-        Kolejnosc_graczy = (Kolejnosc_graczy + 1) % GRACZE;
+        if (Next)
+        {
+            Kolejnosc_graczy = (Kolejnosc_graczy + 1) % GRACZE;
+        }
+        
+        srand(time(NULL));
         Kolo_Los = rand() % 15;
 
         textColor();
@@ -382,7 +403,6 @@ int main()
         cout << "1. Krec kolem" << endl;
         cout << "2. Odgadnij haslo" << endl;
         cout << "3. Kup samogloske" << endl;
-        cout << "4. Kup spolgloske" << endl;
         textColor('R');
         cout << "Co chcesz zrobic? --> "; cin >> wybor;
         
@@ -406,6 +426,8 @@ int main()
                 system("cls");
 
                 Liczba_Rund++;
+                Next = true;
+                Moze_odgadnac_samogloske = false;
 
                 break;
             }
@@ -423,6 +445,8 @@ int main()
                 system("cls");
 
                 Liczba_Rund++;
+                Next = true;
+                Moze_odgadnac_samogloske = false;
 
                 break;
             }
@@ -439,6 +463,11 @@ int main()
             {
                 TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa + Kolo[Kolo_Los];
 
+                if (jest_samogloska(Litera) != 1)
+                {
+                    Moze_odgadnac_samogloske = true;
+                }
+
                 textColor('Y');
                 cout << "###########################" << endl;
                 cout << "# Brawo, odgadles litere! #" << endl;
@@ -448,6 +477,8 @@ int main()
                 Sleep(1000);
 
                 system("cls");
+
+                Next = false;
 
             }
             else
@@ -461,6 +492,9 @@ int main()
                 Sleep(1000);
 
                 system("cls");
+
+                Next = true;
+                Moze_odgadnac_samogloske = false;
             }
 
             Liczba_Rund++;
@@ -500,16 +534,73 @@ int main()
             system("cls");
 
             Liczba_Rund++;
+            Next = true;
+            Moze_odgadnac_samogloske = false;
 
             break;
         case '3':
+            if (Moze_odgadnac_samogloske == true)
+            {
+                if (TAB_gracze[Kolejnosc_graczy].kasa >= 500)
+                {
+                    TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa - 500;
 
-            system("cls");
+                    while (true)
+                    {
+                        cout << endl;
+                        textColor('B');
+                        cout << "[ -500 ]" << endl << endl;
+                        textColor();
+                        cout << "Odkryj samogloske: "; textColor('Y'); cin >> samogloska;
+                        cout << endl;
 
-            break;
-        case '4':
+                        if (jest_samogloska(samogloska) == 1)
+                        {
+         
+                            for (int i = 0; i < IloscLiter; i++)
+                            {
+                                if (PokazywanieLiterek[i] == PustePole)
+                                {
+                                    srand(time(NULL));
+                                    PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, samogloska);
+                                }
 
+                                if (PokazywanieLiterek[i] == samogloska)
+                                {
+                                    textColor('R');
+                                    cout << PokazywanieLiterek[i] << " ";
+                                    textColor();
+                                }
+                                else
+                                {
+                                    textColor('Y');
+                                    cout << PokazywanieLiterek[i] << " ";
+                                    textColor();
+                                }
+                            }
+                            
+                            break;
+                        }
 
+                        textColor('R');
+                        cout << "PODAJ SAMOGLOSKE!";
+                        textColor();
+                    }
+                }
+                else
+                {
+                    cout << "Nie masz kasy aby kupic samogloske!";
+                    Next = false;
+                }
+            }
+            else
+            {
+                cout << "Musisz odgadnac spolgloske!";
+                Next = false;
+            }
+         
+
+            Sleep(1200);
             system("cls");
 
             break;
