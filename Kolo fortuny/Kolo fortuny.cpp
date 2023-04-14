@@ -288,10 +288,11 @@ int main()
     //RUNDA
     while (true)
     {
-        if (Runda == 4)
+        if (Runda == 3)
         {
             break;
         }
+
         //Losowanie kategorii
         srand(time(NULL));
         int RandKategoria = rand() % Y;
