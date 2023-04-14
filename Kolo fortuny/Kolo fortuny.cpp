@@ -41,11 +41,12 @@ const int Y = 5;
 //Ilosc graczy
 const int GRACZE = 3;
 
+//
+const int LICZBA_RUND = 3;
+
 fstream kategoria[Y];
 
 string nazwy_plikow[Y] = { "Kraje", "Pojazdy", "Sprzet", "Zwierzeta", "Rosliny" };
-
-string TAB_samogloski[12] = {"a", "A", "e", "E", "i", "I", "o", "O", "u", "U", "y", "Y"};
 
 int Kolo[] = { -1, 0, 100, 200, 100, 200, 100, 200, 500, 500, 1000, 1000, 1500, 2000, 3000, 5000 }; // -1 bankrut // 0 strata kolejki
     
@@ -155,10 +156,7 @@ int jest_samogloska(string Litera)
 
 int main()
 {
-    srand(time(NULL));
-    int RandKategoria = rand() % Y;
-
-    int Liczba_Rund = 1;
+    int Runda = 1;
     int Kolo_Los;
     int RandHaslo;
     int IloscLiter;
@@ -169,7 +167,6 @@ int main()
     char wybor;
 
     string Hasla[X];
-    string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
     string PokazywanieLiterek[25];
     string TabPorownanieZwpisem[25];
 
@@ -182,56 +179,7 @@ int main()
     bool End = true;
     bool Next = true;
     bool Moze_odgadnac_samogloske = false;
-
-    //Losowanie kategorii
-
-    kategoria[RandKategoria].open(nazwy_plikow[RandKategoria]+".txt", ios::in);
-
-    if (kategoria[RandKategoria].good() == false && !kategoria[RandKategoria].is_open())
-    {
-        system("cls");
-        textColor('R');
-
-        cout << "Plik nie istnieje lub jest otwarty!";
-
-        exit(0);
-    }
-
-    //Przypisywanie hasel do tablicy
-
-    while (getline(kategoria[RandKategoria], Linia_z_pliku))
-    {
-  
-        Hasla[nr_lini] = Linia_z_pliku; 
-
-        nr_lini++;
-
-    }
-
-    kategoria[RandKategoria].close();
-
-    if (nr_lini == 0) //Sprawdza czy kategoria jest pusta (czyli ma 0 lini)
-    {
-        system("cls");
-        cout << "Kategoria jest pusta!" << endl;
-
-        exit(0);
-    }
-
-    //Losowanie hasla
-
-    srand(time(NULL));
-    RandHaslo = rand() % nr_lini;
-
-    //Ilosc liter
-
-    IloscLiter = Hasla[RandHaslo].length();
-                
-    for (int i = 0; i < IloscLiter; i++) //Wypelnianie tablicy z porownaniem
-    {
-        TabPorownanieZwpisem[i] = Hasla[RandHaslo][i];
-    }
-    
+   
     //Podaj imiona graczy
 
     while (true)
@@ -337,294 +285,426 @@ int main()
     }
     system("cls");
 
-
-    for (int i = 0; i < IloscLiter; i++)
+    //RUNDA
+    while (true)
     {
-        PokazywanieLiterek[i] = PustePole;
-    }
-
-    while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem)) //Program własciwy
-    {
-        if (Next)
+        if (Runda == 4)
         {
-            Kolejnosc_graczy = (Kolejnosc_graczy + 1) % GRACZE;
+            break;
         }
-        
+        //Losowanie kategorii
         srand(time(NULL));
-        Kolo_Los = rand() % 15;
+        int RandKategoria = rand() % Y;
 
-        textColor();
-        cout << "*********"; textColor('R'); cout << " KOLO FORTUNY "; textColor(); cout << "**********" << endl;
-        cout << "***********"; textColor('R'); cout << " RUNDA: " << Liczba_Rund; textColor(); cout << " ************" << endl << endl;
-        cout << "KATEGORIA: " << Kategoria_Nazwa << endl << endl;
-        cout << "LICZBA LITER: " << IloscLiter << endl << endl;
-        textColor('B');
-        for (int i = 0; i < GRACZE; i++)
+        string Kategoria_Nazwa = nazwy_plikow[RandKategoria];
+
+        kategoria[RandKategoria].open(nazwy_plikow[RandKategoria] + ".txt", ios::in);
+
+        if (kategoria[RandKategoria].good() == false && !kategoria[RandKategoria].is_open())
         {
-            if (i == Kolejnosc_graczy)
-            {
-                textColor('P'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].kasa << " )" << endl;
-            }
-            else
-            {
-                textColor('B'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].kasa << " )" << endl;
-            }
+            system("cls");
+            textColor('R');
+
+            cout << "Plik nie istnieje lub jest otwarty!";
+
+            exit(0);
         }
-        textColor();
-        cout << endl;
-        cout << "*********************************" << endl << endl;
-        cout << "     ";
 
+        //Przypisywanie hasel do tablicy
 
-        //Rysowanie pola wypelniania
+        while (getline(kategoria[RandKategoria], Linia_z_pliku))
+        {
 
-        textColor('G');
-        cout << "[ ";
+            Hasla[nr_lini] = Linia_z_pliku;
+
+            nr_lini++;
+
+        }
+
+        kategoria[RandKategoria].close();
+
+        if (nr_lini == 0) //Sprawdza czy kategoria jest pusta (czyli ma 0 lini)
+        {
+            system("cls");
+            cout << "Kategoria jest pusta!" << endl;
+
+            exit(0);
+        }
+
+        //Losowanie hasla
+
+        srand(time(NULL));
+        RandHaslo = rand() % nr_lini;
+
+        //Ilosc liter
+
+        IloscLiter = Hasla[RandHaslo].length();
+
+        for (int i = 0; i < IloscLiter; i++) //Wypelnianie tablicy z porownaniem
+        {
+            TabPorownanieZwpisem[i] = Hasla[RandHaslo][i];
+        }
+
         for (int i = 0; i < IloscLiter; i++)
         {
-            if (PokazywanieLiterek[i] == PustePole)
-            {
-                PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, Litera);
-            }
-
-            cout << PokazywanieLiterek[i] << " ";
+            PokazywanieLiterek[i] = PustePole;
         }
-        cout << "]" << endl << endl;
 
-
-        //Testowe pokazywanie hasla
-
-        ///////////////////////////////////
-        cout << Hasla[RandHaslo] << endl;
-        ///////////////////////////////////
-
-        textColor();
-        cout << "*********************************" << endl << endl;
-        cout << "1. Krec kolem" << endl;
-        cout << "2. Odgadnij haslo" << endl;
-        cout << "3. Kup samogloske" << endl;
-        textColor('R');
-        cout << "Co chcesz zrobic? --> "; cin >> wybor;
-        
-
-        switch (wybor)
+        srand(time(NULL));
+        Kolejnosc_graczy = rand() % 3;
+        while (End && PorownajTablice(IloscLiter, PokazywanieLiterek, TabPorownanieZwpisem)) //RUNDA
         {
-        case '1':
-            if (Kolo_Los == 0)
+            if (Next)
             {
-                TAB_gracze[Kolejnosc_graczy].kasa = 0;
-
-                cout << endl;
-                textColor('Y');
-                cout << "############" << endl;
-                cout << "# Bankrut! #" << endl;
-                cout << "############" << endl;
-                textColor();
-
-                Sleep(1000);
-
-                system("cls");
-
-                Liczba_Rund++;
-                Next = true;
-                Moze_odgadnac_samogloske = false;
-
-                break;
-            }
-            if (Kolo_Los == 1)
-            {
-                cout << endl;
-                textColor('Y');
-                cout << "##################" << endl;
-                cout << "# Strata kolejki!#" << endl;
-                cout << "##################" << endl;
-                textColor();
-
-                Sleep(1000);
-
-                system("cls");
-
-                Liczba_Rund++;
-                Next = true;
-                Moze_odgadnac_samogloske = false;
-
-                break;
+                Kolejnosc_graczy = (Kolejnosc_graczy + 1) % GRACZE;
             }
 
-            cin.ignore();
-            cout << endl;
+            srand(time(NULL));
+            Kolo_Los = rand() % 15;
+
+            textColor();
+            cout << "*********"; textColor('R'); cout << " KOLO FORTUNY "; textColor(); cout << "**********" << endl;
+            cout << "***********"; textColor('R'); cout << " RUNDA: " << Runda; textColor(); cout << " ************" << endl << endl;
+            cout << "KATEGORIA: " << Kategoria_Nazwa << endl << endl;
+            cout << "LICZBA LITER: " << IloscLiter << endl << endl;
             textColor('B');
-            cout << "[ " << Kolo[Kolo_Los] << " ]" << endl << endl;
-            textColor();
-            cout << "Podaj litere: "; textColor('Y'); cin >> Litera;
-            cout << endl;
-
-            if (Czy_Dobra_Litera(Litera, TabPorownanieZwpisem, IloscLiter) == true)
+            for (int i = 0; i < GRACZE; i++)
             {
-                TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa + Kolo[Kolo_Los];
-
-                if (jest_samogloska(Litera) != 1)
+                if (i == Kolejnosc_graczy)
                 {
-                    Moze_odgadnac_samogloske = true;
+                    textColor('P'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].kasa << " )" << endl;
+                }
+                else
+                {
+                    textColor('B'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].kasa << " )" << endl;
+                }
+            }
+            textColor();
+            cout << endl;
+            cout << "*********************************" << endl << endl;
+            cout << "     ";
+
+
+            //Rysowanie pola wypelniania
+
+            textColor('G');
+            cout << "[ ";
+            for (int i = 0; i < IloscLiter; i++)
+            {
+                if (PokazywanieLiterek[i] == PustePole)
+                {
+                    PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, Litera);
                 }
 
-                textColor('Y');
-                cout << "###########################" << endl;
-                cout << "# Brawo, odgadles litere! #" << endl;
-                cout << "###########################" << endl;
-                textColor();
-
-                Sleep(1000);
-
-                system("cls");
-
-                Next = false;
-
+                cout << PokazywanieLiterek[i] << " ";
             }
-            else
-            {
-                textColor('Y');
-                cout << "##########" << endl;
-                cout << "# Pudlo! #" << endl;
-                cout << "##########" << endl;
-                textColor();
+            cout << "]" << endl << endl;
 
-                Sleep(1000);
+
+            //Testowe pokazywanie hasla
+
+            ///////////////////////////////////
+            cout << Hasla[RandHaslo] << endl;
+            ///////////////////////////////////
+
+            textColor();
+            cout << "*********************************" << endl << endl;
+            cout << "1. Krec kolem" << endl;
+            cout << "2. Odgadnij haslo" << endl;
+            cout << "3. Kup samogloske" << endl;
+            textColor('R');
+            cout << "Co chcesz zrobic? --> "; cin >> wybor;
+
+
+            switch (wybor)
+            {
+            case '1':
+                if (Kolo_Los == 0)
+                {
+                    TAB_gracze[Kolejnosc_graczy].kasa = 0;
+
+                    cout << endl;
+                    textColor('Y');
+                    cout << "############" << endl;
+                    cout << "# Bankrut! #" << endl;
+                    cout << "############" << endl;
+                    textColor();
+
+                    Sleep(1000);
+
+                    system("cls");
+
+                    Next = true;
+                    Moze_odgadnac_samogloske = false;
+
+                    break;
+                }
+                if (Kolo_Los == 1)
+                {
+                    cout << endl;
+                    textColor('Y');
+                    cout << "##################" << endl;
+                    cout << "# Strata kolejki!#" << endl;
+                    cout << "##################" << endl;
+                    textColor();
+
+                    Sleep(1000);
+
+                    system("cls");
+
+                    Next = true;
+                    Moze_odgadnac_samogloske = false;
+
+                    break;
+                }
+
+                cin.ignore();
+                cout << endl;
+                textColor('B');
+                cout << "[ " << Kolo[Kolo_Los] << " ]" << endl << endl;
+                textColor();
+                cout << "Podaj litere: "; textColor('Y'); cin >> Litera;
+                cout << endl;
+
+                if (Czy_Dobra_Litera(Litera, TabPorownanieZwpisem, IloscLiter) == true)
+                {
+                    TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa + Kolo[Kolo_Los];
+
+                    if (jest_samogloska(Litera) != 1)
+                    {
+                        Moze_odgadnac_samogloske = true;
+                    }
+
+                    textColor('Y');
+                    cout << "###########################" << endl;
+                    cout << "# Brawo, odgadles litere! #" << endl;
+                    cout << "###########################" << endl;
+                    textColor();
+
+                    Sleep(1000);
+
+                    system("cls");
+
+                    Next = false;
+
+                }
+                else
+                {
+                    textColor('Y');
+                    cout << "##########" << endl;
+                    cout << "# Pudlo! #" << endl;
+                    cout << "##########" << endl;
+                    textColor();
+
+                    Sleep(1000);
+
+                    system("cls");
+
+                    Next = true;
+                    Moze_odgadnac_samogloske = false;
+                }
+
+
+                break;
+            case '2':
+                cin.ignore();
+                cout << endl;
+                textColor();
+                cout << "Podaj haslo: "; textColor('Y'); getline(cin, Haslo); // wczytaj całą linię tekstu, w tym spacje
+                textColor();
+                cout << endl;
+
+                // zamień spacje na podkreślenia
+                for (int i = 0; i < Haslo.length(); i++) {
+                    if (Haslo[i] == ' ') {
+                        Haslo[i] = '_';
+                    }
+                }
+
+                if (Hasla[RandHaslo] == Haslo)
+                {
+                    TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa + 400;
+
+                    End = false;
+                }
+                else
+                {
+                    textColor('Y');
+                    cout << "########" << endl;
+                    cout << "# Zle! #" << endl;
+                    cout << "########" << endl;
+                    textColor();
+                    Sleep(300);
+                }
+
+                Sleep(800);
 
                 system("cls");
 
                 Next = true;
                 Moze_odgadnac_samogloske = false;
-            }
 
-            Liczba_Rund++;
-
-            break;
-        case '2':
-            cin.ignore();
-            cout << endl;
-            textColor();
-            cout << "Podaj haslo: "; textColor('Y'); getline(cin, Haslo); // wczytaj całą linię tekstu, w tym spacje
-            textColor();
-            cout << endl;
-            
-            // zamień spacje na podkreślenia
-            for (int i = 0; i < Haslo.length(); i++) {
-                if (Haslo[i] == ' ') {
-                    Haslo[i] = '_';
-                }
-            }
-
-            if (Hasla[RandHaslo] == Haslo)
-            {
-                End = false;
-            }
-            else
-            {
-                textColor('Y');
-                cout << "########" << endl;
-                cout << "# Zle! #" << endl;
-                cout << "########" << endl;
-                textColor();
-                Sleep(300);
-            }
-
-            Sleep(800);
-
-            system("cls");
-
-            Liczba_Rund++;
-            Next = true;
-            Moze_odgadnac_samogloske = false;
-
-            break;
-        case '3':
-            if (Moze_odgadnac_samogloske == true)
-            {
-                if (TAB_gracze[Kolejnosc_graczy].kasa >= 500)
+                break;
+            case '3':
+                if (Moze_odgadnac_samogloske == true)
                 {
-                    TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa - 500;
-
-                    while (true)
+                    if (TAB_gracze[Kolejnosc_graczy].kasa >= 500)
                     {
-                        cout << endl;
-                        textColor('B');
-                        cout << "[ -500 ]" << endl << endl;
-                        textColor();
-                        cout << "Odkryj samogloske: "; textColor('Y'); cin >> samogloska;
-                        cout << endl;
+                        TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa - 500;
 
-                        if (jest_samogloska(samogloska) == 1)
+                        while (true)
                         {
-         
-                            for (int i = 0; i < IloscLiter; i++)
+                            cout << endl;
+                            textColor('B');
+                            cout << "[ -500 ]" << endl << endl;
+                            textColor();
+                            cout << "Odkryj samogloske: "; textColor('Y'); cin >> samogloska;
+                            cout << endl;
+
+                            if (jest_samogloska(samogloska) == 1)
                             {
-                                if (PokazywanieLiterek[i] == PustePole)
+
+                                for (int i = 0; i < IloscLiter; i++)
                                 {
-                                    srand(time(NULL));
-                                    PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, samogloska);
+                                    if (PokazywanieLiterek[i] == PustePole)
+                                    {
+                                        srand(time(NULL));
+                                        PokazywanieLiterek[i] = wypelnianiePola(Hasla[RandHaslo], i, samogloska);
+                                    }
+
+                                    if (PokazywanieLiterek[i] == samogloska)
+                                    {
+                                        textColor('R');
+                                        cout << PokazywanieLiterek[i] << " ";
+                                        textColor();
+                                    }
+                                    else
+                                    {
+                                        textColor('Y');
+                                        cout << PokazywanieLiterek[i] << " ";
+                                        textColor();
+                                    }
                                 }
 
-                                if (PokazywanieLiterek[i] == samogloska)
-                                {
-                                    textColor('R');
-                                    cout << PokazywanieLiterek[i] << " ";
-                                    textColor();
-                                }
-                                else
-                                {
-                                    textColor('Y');
-                                    cout << PokazywanieLiterek[i] << " ";
-                                    textColor();
-                                }
+                                break;
                             }
-                            
-                            break;
-                        }
 
-                        textColor('R');
-                        cout << "PODAJ SAMOGLOSKE!";
-                        textColor();
+                            textColor('R');
+                            cout << "PODAJ SAMOGLOSKE!";
+                            textColor();
+                        }
+                    }
+                    else
+                    {
+                        cout << "Nie masz kasy aby kupic samogloske!";
+                        Next = false;
                     }
                 }
                 else
                 {
-                    cout << "Nie masz kasy aby kupic samogloske!";
+                    cout << "Musisz odgadnac spolgloske!";
                     Next = false;
                 }
+
+
+                Sleep(1200);
+                system("cls");
+
+                break;
+            default:
+                system("cls");
+
+                textColor('R');
+                cout << "#################################" << endl;
+                cout << "#  Podaj liczbe z zakresu 1-2!  #" << endl;
+                cout << "#################################" << endl << endl;
+                textColor();
+
+                Sleep(1000);
+
+                break;
             }
-            else
+
+        }
+
+        // Koniec rundy
+        End = true;
+        ++Runda;
+        Kolejnosc_graczy = rand() % 3;
+        for (int i = 0; i < 25; i++)
+        {
+            Hasla[i].clear();
+        }
+        for (int i = 0; i < GRACZE; i++)
+        {
+            TAB_gracze[i].portfel = TAB_gracze[i].portfel + TAB_gracze[i].kasa;
+            TAB_gracze[i].kasa = 0;
+        }
+
+        system("cls");
+        textColor('R');
+        cout << "[ Gracz " << TAB_gracze[Kolejnosc_graczy].imie << " wygrywa runde! ]" << endl << endl;
+        for (int i = 0; i < GRACZE; i++)
+        {
+          textColor('B'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].portfel << " )" << endl; textColor();
+        }
+        
+        cout << endl;
+        cout << "Nacisnij ENTER aby kontynuowac...";
+        cin.ignore();
+        system("cls");
+
+        for (int i = 0; i < 15; i++)
+        {
+            int queue = i % 3;
+            switch (queue)
             {
-                cout << "Musisz odgadnac spolgloske!";
-                Next = false;
+            case 0:
+                textColor('B');
+                break;
+            case 1:
+                textColor('Y');
+                break;
+            case 2:
+                textColor('G');
+                break;
             }
-         
 
-            Sleep(1200);
+            cout << "[ RUNDA NUMER  " << Runda << "! ] ";
+            cout << " [ RUNDA NUMER  " << Runda << "! ] ";
+            cout << " [ RUNDA NUMER  " << Runda << "! ] ";
+            Sleep(100);
             system("cls");
+        }
+    }
+    //koniec programu
+    int najwiekszy = TAB_gracze[0].portfel;
+    string winner;
 
-            break;
-        default:
-            system("cls");
- 
-            textColor('R');
-            cout << "#################################" << endl;
-            cout << "#  Podaj liczbe z zakresu 1-2!  #" << endl;
-            cout << "#################################" << endl << endl;
-            textColor();
-            
-            Sleep(1000);
+    for (int i = 0; i < 5; i++) {
+        if (TAB_gracze[i].portfel > najwiekszy) 
+        {
+            najwiekszy = TAB_gracze[i].portfel;
 
-            break;
+            winner = TAB_gracze[i].imie;
         }
     }
 
-    // Koniec programu
-
     system("cls");
-    textColor('R');
-    cout << "[ Gracz " << TAB_gracze[Kolejnosc_graczy].imie << " wygrywa gre! ]" << endl << endl;
-    textColor();
+    cout << "[ Gracz "; textColor('Y'); cout << winner; textColor(); cout << " wygrywa runde! ]" << endl << endl;
+    cout << "Wyniki: " << endl;
+    for (int i = 0; i < GRACZE; i++)
+    {
+        if (TAB_gracze[i].imie == winner)
+        {
+            textColor('P'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].portfel << " )" << endl; textColor();
+        }
+        else
+        {
+            textColor('B'); cout << TAB_gracze[i].imie << " ( " << TAB_gracze[i].portfel << " )" << endl; textColor();
+        }
+    }
+
 
     return 0;
 }
