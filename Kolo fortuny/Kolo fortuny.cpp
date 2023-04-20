@@ -249,7 +249,6 @@ int main()
         {
             break;
         }
-
     }
 
     // Animacja 
