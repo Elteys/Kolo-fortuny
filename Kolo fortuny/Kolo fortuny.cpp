@@ -5,7 +5,7 @@
 #include <time.h> /* time */
 #include <fstream>
 #include <string>
-#include <cctype>
+#include <cctype>5
 
 using namespace std;
 
@@ -152,6 +152,27 @@ int jest_samogloska(string Litera)
     }
 
     return 0;
+}
+
+bool poprawne_haslo(string haslo, string randHaslo)
+{
+    string Wielka_litera;
+    string Wielka_RandHaslo;
+
+    for (int i = 0; i < haslo.length(); i++)
+    {
+        Wielka_litera += toupper(int(haslo[i]));
+        Wielka_RandHaslo+= toupper(int(randHaslo[i]));
+    }
+
+    if (Wielka_litera == Wielka_RandHaslo)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }   
 }
 
 int main()
@@ -519,7 +540,7 @@ int main()
                     }
                 }
 
-                if (Hasla[RandHaslo] == Haslo)
+                if (poprawne_haslo(Haslo, Hasla[RandHaslo]))
                 {
                     TAB_gracze[Kolejnosc_graczy].kasa = TAB_gracze[Kolejnosc_graczy].kasa + 400;
 
